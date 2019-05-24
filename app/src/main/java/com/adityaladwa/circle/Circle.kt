@@ -21,6 +21,7 @@ class Circle @JvmOverloads constructor(
     private val paint = Paint()
     private var cX: Float = 0f
     private var cY: Float = 0f
+    private var radius: Float = 0f
 
     init {
         paint.color = Color.BLUE
@@ -31,15 +32,30 @@ class Circle @JvmOverloads constructor(
         canvas?.run {
             cX = width / 2f
             cY = height / 2f
-            canvas.drawCircle(cX, cY, cX, paint)
+            radius = width / 2f
+            canvas.drawCircle(cX, cY, radius, paint)
         }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event?.run {
-            if (isPointInCircle(x, y)) {
-                paint.color = getNewColor()
-                invalidate()
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (isPointInCircle(x, y)) {
+                        cX = x
+                        cY = y
+                        invalidate()
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (isPointInCircle(x, y)) {
+                        paint.color = getNewColor()
+                        invalidate()
+                    }
+                }
             }
         }
         return super.onTouchEvent(event)
@@ -52,7 +68,7 @@ class Circle @JvmOverloads constructor(
     private fun isPointInCircle(x: Float, y: Float): Boolean {
         val dx = x - cX
         val dy = y - cY
-        if ((dx * dx) + (dy * dy) <= (cX * cX)) {
+        if ((dx * dx) + (dy * dy) <= (radius * radius)) {
             return true
         }
         return false

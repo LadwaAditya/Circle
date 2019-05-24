@@ -8,6 +8,7 @@
         tools:context=".MainActivity">
 
     <com.adityaladwa.circle.Circle
+            android:id="@+id/circle"
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:layout_constraintEnd_toEndOf="parent"
